@@ -11,24 +11,49 @@ const AuthForm = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-
     const enteredEmail = enteredInputRef.current.value;
     const enteredPassword = enteredinputPassword.current.value;
 
-    const enteredEmailHasError = enteredEmail.trim() === '';
-    const enteredPasswordHasError = enteredPassword.trim().length !== 6;
+    // const enteredEmailHasError = enteredEmail.trim() === '';
+    // const enteredPasswordHasError = enteredPassword.trim().length !== 6;
 
-    if (enteredEmailHasError) {
-      setEnteredEmailIsValid(false);
-    }
+    // if (enteredEmailHasError) {
+    //   setEnteredEmailIsValid(false);
+    // }
 
-    if (enteredPasswordHasError) {
-      setEnteredPasswordIsValid(false);
-    }
+    // if (enteredPasswordHasError) {
+    //   setEnteredPasswordIsValid(false);
+    // }
 
-    if (enteredEmailHasError && enteredPasswordHasError) {
-      setEnteredEmailIsValid(false);
-      setEnteredPasswordIsValid(false);
+    // if (enteredEmailHasError && enteredPasswordHasError) {
+    //   setEnteredEmailIsValid(false);
+    //   setEnteredPasswordIsValid(false);
+    // }
+
+    if (isLogin) {
+    } else {
+      fetch(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD9f03aHqsbHidtAYGISQnjcTEtYwDda0M',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            email: enteredEmail,
+            password: enteredPassword,
+            returnSecureToken: true,
+          }),
+          header: {
+            'Content-Type': 'application/json',
+          },
+        }
+      ).then((res) => {
+        if (res.ok) {
+          //..
+        } else {
+          return res.json().then((data) => {
+            console.log(data);
+          });
+        }
+      });
     }
   };
 

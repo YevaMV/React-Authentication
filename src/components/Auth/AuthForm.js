@@ -4,8 +4,9 @@ import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [enteredEmailIsValid, setEnteredEmailIsValid] = useState(true);
-  const [enteredPasswordIsValid, setEnteredPasswordIsValid] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [enteredEmailIsValid, setEnteredEmailIsValid] = useState(true);
+  // const [enteredPasswordIsValid, setEnteredPasswordIsValid] = useState(true);
   const enteredInputRef = useRef();
   const enteredinputPassword = useRef();
 
@@ -30,6 +31,7 @@ const AuthForm = () => {
     //   setEnteredPasswordIsValid(false);
     // }
 
+    setIsLoading(true);
     if (isLogin) {
     } else {
       fetch(
@@ -46,11 +48,16 @@ const AuthForm = () => {
           },
         }
       ).then((res) => {
+        setIsLoading(false);
         if (res.ok) {
           //..
         } else {
           return res.json().then((data) => {
-            console.log(data);
+            let errorMessage = 'Authentication failed';
+            // if (data && data.error && data.error.message) {
+            //   errorMessage = data.error.message;
+            // }
+            alert(errorMessage);
           });
         }
       });
@@ -68,21 +75,24 @@ const AuthForm = () => {
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
           <input type="email" id="email" ref={enteredInputRef} />
-          {!enteredEmailIsValid && (
+          {/* {!enteredEmailIsValid && (
             <p className="error-text">Email can not be empty</p>
-          )}
+          )} */}
         </div>
         <div className={classes.control}>
           <label htmlFor="password">Your Password</label>
           <input type="password" id="password" ref={enteredinputPassword} />
-          {!enteredPasswordIsValid && (
+          {/* {!enteredPasswordIsValid && (
             <p className="error-text">
               Please enter a valid Password(6 charachters long)!
             </p>
-          )}
+          )} */}
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? 'Login' : 'Create Account'}</button>
+          {!isLoading && (
+            <button>{isLogin ? 'Login' : 'Create Account'}</button>
+          )}
+          {isLoading && <p>Sending request...</p>}
           <button
             type="button"
             className={classes.toggle}

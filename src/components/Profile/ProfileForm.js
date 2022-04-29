@@ -27,6 +27,7 @@ const ProfileForm = () => {
         },
       }
     ).then((res) => {
+      alert('your password has been changed');
       history.replace('/');
     });
   };
